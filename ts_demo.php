@@ -23,6 +23,6 @@ $obj->uid=UID;
 $obj->proxy='http://127.0.0.1:12639';//腾讯内部访问外网的代理，不需要就留空
 $ret=$obj->tsSave();
 var_dump($ret);
-$obj->openId="0aM1bWlgcktGWyUzBaANpJIAs_uEOi87fupVnXILWdI";//应该是微信公众号 对应的openId
+$obj->code="0aM1bWlgcktGWyUzBaANpJIAs_uEOi87fupVnXILWdI";//随机生成的唯一对应的授权码，一次性,目前还没找到是从哪生成的
 $ret=$obj->getProject();
 var_dump($ret);

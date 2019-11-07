@@ -9,7 +9,7 @@ namespace  Ts\wx_api;
 class TsSDK
 {
     private $api_host="http://mobile-app.hand-china.com";
-    public $openId;
+    public $code;
     public $access_token='';
     public $uid;
     public $token;
@@ -73,21 +73,18 @@ class TsSDK
      */
     public function getToken()
     {
-        $url=$this->api_host."/hmap/oauth/token?client_id=wx_client&client_secret=secret&grant_type=password&username={$this->openId}&password=123456&p_phone_no=111111";
+        $url=$this->api_host."/hmap/oauth/token?client_id=wx_client&client_secret=secret&grant_type=password&username={$this->code}&password=123456&p_phone_no=111111";
         $post=[
             'params'=>[
                 'client_id'=>'wx_client',
                 'client_scret'=>'secret',
                 'grant_type'=>'password',
-                'username'=>$this->openId,
+                'username'=>$this->code,
                 'password'=>'123456',
                 'p_phone_no'=>'111111',
             ]
         ];
         $headers=[
-            "loginName: {$this->uid}",
-            "timestamp: {$this->timestamp}",
-            "token: {$this->token}",
             "Proxy-Connection: keep-alive",
             "Accept: application/json, text/plain, */*",
             "Accept-Encoding: gzip, deflate",
@@ -97,7 +94,6 @@ class TsSDK
             "Host: mobile-app.hand-china.com",
             "Content-Type: application/json;charset=UTF-8",
             "Content-Length: 0",
-            "Authorization: ".json_encode($post),
         ];
 
         $proxy=$this->proxy;
