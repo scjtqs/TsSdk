@@ -8,10 +8,11 @@
 
 ### 变相方案
 
-> 首先，还是得抓包，抓pc微信的公众号的就行，需要一组 access_token、token、timestamp。注意了，获取后就别再用公众号的打卡功能了，（用海马汇app不影响，是两个不同的域名和接口体系）。
+> 首先，还是得抓包，抓pc微信的公众号的就行，需要 access_token。注意了，获取后就别再用公众号的打卡功能了，（用海马汇app不影响，是两个不同的域名和接口体系）。
 
 > 然后你会惊讶的发现，只要不覆盖（重新获取access_token)，它会一直有效，只需要改变打卡接口中的日期参数就能正常run了，真香。
 
 ### 最后
 
 > 我用的fiddler没法搞定token获取接口了，I need your help!欢迎大家分享方案。为了不让我们本来就够低的工资再被克扣。
+> access_token获取接口，需要一个code参数，在微信中运行：https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=http://mobile-app.hand-china.com/hrmsstatic/hrms/hrms_wx_ts/indexWorkflow.html&response_type=code&scope=snsapi_userinfo&state=notice 其中缺失了appid,没抓出来。有了的话，可以在微信中打开上述地址获取code，然后用我sdk中的方法获取access_token。headers里面的token算法很简单，我找出来了，不需要引入了。

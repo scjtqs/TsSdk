@@ -7,22 +7,9 @@
  */
 //access_token
 define('ACCESS_TOKEN','你自己抓取到的access_token');
-//工号
-define('UID','你自己的工号');
-//token
-define('TOKEN','和access_token一起的在Header里面对应的token');
-//timestamp
-define('TIMESTAMP','和access_token一起在header里面对应的13位时间戳');
-
 require_once 'TsSDK.php';
-$obj=new \Ts\wx_api\TsSDK();
-$obj->token=TOKEN;
-$obj->access_token=ACCESS_TOKEN;
-$obj->timestamp=TIMESTAMP;
-$obj->uid=UID;
-$obj->proxy='http://127.0.0.1:12639';//腾讯内部访问外网的代理，不需要就留空
+$uid=null;//可以不填，然后由sdk自己获取，也可以直接引入，不由api来获取。
+$proxy='http://127.0.0.1:12639';//腾讯内部访问外网的代理，不需要就填Null
+$obj=new \Ts\wx_api\TsSDK(ACCESS_TOKEN,$uid,$proxy);
 $ret=$obj->tsSave();
-var_dump($ret);
-$obj->code="0aM1bWlgcktGWyUzBaANpJIAs_uEOi87fupVnXILWdI";//随机生成的唯一对应的授权码，一次性,目前还没找到是从哪生成的
-$ret=$obj->getProject();
 var_dump($ret);

@@ -17,6 +17,26 @@ class TsSDK
     public $project="516900";//项目id
     public $proxy;
 
+    public function __construct($access_token,$uid=null,$proxy=null)
+    {
+        $this->access_token=$access_token;
+        $this->timestamp=microtime(true)*1000;
+        $this->token=md5($access_token.$this->timestamp);
+        if(!empty($proxy)){
+            $this->proxy=$proxy;
+        }
+        if(!empty($uid)){
+            $this->uid;
+        }else{
+            $ret=$this->getUid();
+            if(!empty($ret['rows'])){
+                $this->uid=$ret['rows'][0];
+            }else{
+                return 'access_token error';
+            }
+        }
+    }
+
     /** ts打卡的接口，已经写死了项目id、工作地址、打卡坐标
      * @return array
      */
@@ -85,6 +105,9 @@ class TsSDK
             ]
         ];
         $headers=[
+            "loginName: {$this->uid}",
+            "timestamp: {$this->timestamp}",
+            "token: {$this->token}",
             "Proxy-Connection: keep-alive",
             "Accept: application/json, text/plain, */*",
             "Accept-Encoding: gzip, deflate",
@@ -94,6 +117,7 @@ class TsSDK
             "Host: mobile-app.hand-china.com",
             "Content-Type: application/json;charset=UTF-8",
             "Content-Length: 0",
+            "Authorization: ".json_encode($post),
         ];
 
         $proxy=$this->proxy;
@@ -151,12 +175,34 @@ class TsSDK
             "Content-Type: application/json;charset=UTF-8",
         ];
         $post=[
-          'params'=>[
-              "p_employee_code"=>$this->uid,
-              "p_record_date"=>$date?:date('Ymd',time()),
-          ]
+            'params'=>[
+                "p_employee_code"=>$this->uid,
+                "p_record_date"=>$date?:date('Ymd',time()),
+            ]
         ];
         $proxy=$this->proxy;
+        $ret=$this->supperCurl($url,json_encode($post),null,$headers,$proxy);
+        $head=$ret['header'];
+        $rsp=$ret['body'];
+        return json_decode($rsp,true);
+    }
+
+    /** 获取用户uid
+     * @return mixed {"rows":["23800"],"success":true,"total":1}
+     *
+     */
+    public function getUid()
+    {
+        $url=$this->api_host."/hmap/i/api/getEmpNo?access_token={$this->access_token}";
+        $headers=[
+            "Proxy-Connection: keep-alive",
+            "Accept: application/json, text/plain, */*",
+            "Host: mobile-app.hand-china.com",
+            "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 QBCore/3.53.1159.400 QQBrowser/9.0.2524.400 Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 MicroMessenger/6.5.2.501 NetType/WIFI WindowsWechat",
+            "Referer: http://mobile-app.hand-china.com/hrmsstatic/hrms/hrms_wx_ts/indexWorkflow.html?code=0aM1bWlgcktGWyUzBaANpJIAs_uEOi87fupVnXILWdI&state=notice",
+        ];
+        $proxy=$this->proxy;
+        $post=[[]];
         $ret=$this->supperCurl($url,json_encode($post),null,$headers,$proxy);
         $head=$ret['header'];
         $rsp=$ret['body'];
