@@ -88,7 +88,7 @@ class TsSDK
         return json_decode($rsp,true);
     }
 
-    /** token获取，目前有点问题，可能是包没抓全，提示缺失授权
+    /** token获取，目前有点问题，可能是包没抓全，需要找到拿到code的方法
      * @return array
      */
     public function getToken()
@@ -117,7 +117,6 @@ class TsSDK
             "Host: mobile-app.hand-china.com",
             "Content-Type: application/json;charset=UTF-8",
             "Content-Length: 0",
-            "Authorization: ".json_encode($post),
         ];
 
         $proxy=$this->proxy;
@@ -129,6 +128,60 @@ class TsSDK
 
     /** 获取 项目详情
      * @return mixed
+     * {
+    "status": "S",
+    "project": [
+    {
+    "project_id": 516900,
+    "project_name": "腾讯（上海）-技术资源服务项目-2018-2019-1",
+    "selected_flag": "N",
+    "approver": "",
+    "project_type_id": 1,
+    "project_type": "客户项目",
+    "need_opp": "N",
+    "prj_address_id": 16672,
+    "prj_address_name": "腾云大厦"
+    },
+    ....
+    ],
+    "every_day": {
+    "every_day": "20191116",
+    "approver": "汉得信息",
+    "allowance": "0",
+    "address_id": 0,
+    "descrpt": "",
+    "offbase": 0,
+    "base": "N",
+    "externalcharge": 1,
+    "internalcharge": "",
+    "sale_name": "",
+    "sale_code": "",
+    "opportunity_id": "",
+    "opportunity_name": "",
+    "need_opp": "N",
+    "prj_address_id": "",
+    "site_name": "",
+    "holiday": "Y",
+    "enable": "Y",
+    "lockflag": 0,
+    "status": "Approved"
+    },
+    "projaddress": [
+    {
+    "address_name": "缺省地点",
+    "address_id": 0,
+    "selected_flag": "Y"
+    }
+    ],
+    "flyback": [
+    {
+    "fly_name": "无Flyback",
+    "fly_id": -1,
+    "fly_select": "Y"
+    }
+    ],
+    "con_status": "S"
+    }
      */
     public function getProject()
     {
@@ -156,7 +209,7 @@ class TsSDK
 
     /** 查询某天的ts打卡状态，默认不填的话自动传当天的日期
      * @param null $date
-     * @return mixed
+     * @return mixed {"status":"S","message":"查询成功!","allowance":"N","travel_allowance":"N","con_status":"S"}
      */
     public function getTsStatus($date=null)
     {
@@ -188,7 +241,7 @@ class TsSDK
     }
 
     /** 获取用户uid
-     * @return mixed {"rows":["23800"],"success":true,"total":1}
+     * @return mixed {"rows":["238xx"],"success":true,"total":1}
      *
      */
     public function getUid()
