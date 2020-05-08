@@ -14,7 +14,6 @@
 
 ### 最后
 
-> 我用的fiddler没法搞定token获取接口了，I need your help!欢迎大家分享方案。为了不让我们本来就够低的工资再被克扣。
 > access_token获取接口，需要一个code参数，在微信中运行：https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc81d7e20fa7b9564&redirect_uri=http://mobile-app.hand-china.com/hrmsstatic/hrms/hrms_wx_ts/indexWorkflow.html&response_type=code&scope=snsapi_userinfo&state=notice&connect_redirect=1#wechat_redirect 。可以在微信中打开上述地址获取code，然后用我sdk中的方法获取access_token。headers里面的token算法很简单，我找出来了，不需要引入了。
 
 ### 最后的最后。
